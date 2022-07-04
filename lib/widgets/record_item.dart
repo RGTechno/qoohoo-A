@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_qoohoo/constants.dart';
 import 'package:test_qoohoo/model/sound_player.dart';
 
 class RecordItem extends StatefulWidget {
@@ -17,15 +18,35 @@ class RecordItem extends StatefulWidget {
 }
 
 class _RecordItemState extends State<RecordItem> {
+  String getDate(String path) {
+    int idx = path.lastIndexOf('/');
+    String epochNumber = path.substring(idx + 1, path.length - idx);
+
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(int.parse(epochNumber));
+    return "${date.day}/${date.month}/${date.year}";
+  }
+
+  String date = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      date = getDate(widget.path);
+    });
+    print("Date $date");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black,
-          width: 2,
-        ),
+        color: secondaryColor,
+        borderRadius: BorderRadius.circular(15),
       ),
+      height: MediaQuery.of(context).size.height * 0.1,
+      margin: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -38,9 +59,25 @@ class _RecordItemState extends State<RecordItem> {
             icon: Icon(
               Icons.play_arrow,
               size: 50,
+              color: Colors.white,
             ),
           ),
-          Text("Audio ${widget.no}")
+          Column(
+            children: [
+              Text(
+                "Audio ${widget.no}",
+                style: TextStyle(
+                  color: fontColor,
+                ),
+              ),
+              Text(
+                "$date",
+                style: TextStyle(
+                  color: fontColor,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
