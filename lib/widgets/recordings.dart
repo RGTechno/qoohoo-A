@@ -1,10 +1,9 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:test_qoohoo/widgets/record_item.dart';
 
-import '../model/sound_player.dart';
-
 class Recordings extends StatefulWidget {
-  final List<String> audioPaths;
+  final List<Map> audioPaths;
 
   Recordings(this.audioPaths);
 
@@ -13,19 +12,7 @@ class Recordings extends StatefulWidget {
 }
 
 class _RecordingsState extends State<Recordings> {
-  AudioPlayer _player = AudioPlayer();
-
-  @override
-  void initState() {
-    _player.init();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
-  }
+  final AssetsAudioPlayer _player = AssetsAudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +21,7 @@ class _RecordingsState extends State<Recordings> {
         return RecordItem(
           player: _player,
           no: i + 1,
-          path: widget.audioPaths[i],
+          audio: widget.audioPaths[i],
         );
       },
       itemCount: widget.audioPaths.length,

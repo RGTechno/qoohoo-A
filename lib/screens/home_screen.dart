@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_qoohoo/constants.dart';
-import 'package:test_qoohoo/model/sound_player.dart';
 import 'package:test_qoohoo/model/sound_recorder.dart';
 import 'package:test_qoohoo/widgets/recordings.dart';
 
@@ -18,12 +17,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final stopwatch = Stopwatch();
 
-  List<String> audioFilePaths = [];
+  List<Map> audioFilePaths = [];
 
   AudioRecorder _recorder = AudioRecorder();
-  AudioPlayer _player = AudioPlayer();
 
   late Timer timer;
+
+  bool isRecording = false;
 
   Future<String?> getPath() async {
     Directory? appDocDir = await getExternalStorageDirectory();
@@ -38,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     _recorder.init();
-    _player.init();
     super.initState();
   }
 
@@ -47,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement dispose
     _recorder.dispose();
     timer.cancel();
-    _player.dispose();
     super.dispose();
   }
 
@@ -125,6 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     // timer = Timer.periodic(Duration(milliseconds: 1), (_) {
                     //   setState(() {});
                     // });
+                    setState(() {
+                      isRecording = true;
+                    });
                     String? newPath = await getPath();
                     await _recorder.record(newPath!);
                   },
@@ -132,17 +133,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     stopwatch.stop();
                     String? path = await _recorder.stop();
                     if (path != null) {
-                      audioFilePaths.add(path);
+                      audioFilePaths.add({
+                        "path": path,
+                        "duration":
+                            "${stopwatch.elapsed.inMinutes.toString()}:${stopwatch.elapsed.inSeconds.toString()}"
+                      });
                     }
-                    print(stopwatch.elapsed.inSeconds.toString() +
-                        ":" +
-                        stopwatch.elapsed.inMilliseconds.toString());
-                    stopwatch.reset();
-                    setState(() {});
+                    setState(() {
+                      isRecording = false;
+                    });
                   },
                   child: Container(
                     decoration: BoxDecoration(
                       color: primaryColor,
+                      border: isRecording
+                          ? Border.all(
+                              color: buttonColor,
+                              width: 5,
+                            )
+                          : null,
                       boxShadow: [
                         BoxShadow(
                           color: secondaryColor,

@@ -1,17 +1,18 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:audio_wave/audio_wave.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:test_qoohoo/constants.dart';
-import 'package:test_qoohoo/model/sound_player.dart';
 
 class RecordItem extends StatefulWidget {
-  final AudioPlayer player;
-  final String path;
+  final AssetsAudioPlayer player;
+  final Map audio;
   final int no;
 
   RecordItem({
     required this.player,
     required this.no,
-    required this.path,
+    required this.audio,
   });
 
   @override
@@ -19,6 +20,8 @@ class RecordItem extends StatefulWidget {
 }
 
 class _RecordItemState extends State<RecordItem> {
+  final AssetsAudioPlayer _player = AssetsAudioPlayer();
+
   String getDate(String path) {
     int idx = path.lastIndexOf('/');
     String epochNumber = path.substring(idx + 1, path.length);
@@ -26,17 +29,20 @@ class _RecordItemState extends State<RecordItem> {
     return "${date.day}/${date.month}/${date.year}";
   }
 
+  bool _isPlaying = false;
+
   late String date;
 
   @override
   void initState() {
     // TODO: implement initState
-    date = getDate(widget.path);
+    date = getDate(widget.audio["path"]);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Card(
       elevation: 4,
       // margin: EdgeInsets.symmetric(vertical: ),
@@ -66,56 +72,106 @@ class _RecordItemState extends State<RecordItem> {
             end: Alignment.centerRight,
           ),
         ),
-        height: MediaQuery.of(context).size.height * 0.1,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        height: _isPlaying
+            ? mediaQuery.orientation == Orientation.landscape
+                ? mediaQuery.size.height * 0.4
+                : mediaQuery.size.height * 0.2
+            : mediaQuery.orientation == Orientation.landscape
+                ? mediaQuery.size.height * 0.2
+                : mediaQuery.size.height * 0.1,
+        child: Column(
+          mainAxisAlignment: _isPlaying
+              ? MainAxisAlignment.spaceAround
+              : MainAxisAlignment.center,
           children: [
-            InkWell(
-              onTap: () async {
-                await widget.player.play(
-                  widget.path,
-                );
-              },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                color: primaryColor,
-                elevation: 2,
-                surfaceTintColor: secondaryColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Icon(
-                    Icons.play_arrow_rounded,
-                    size: 30,
-                    color: iconColor,
-                  ),
-                ),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(
-                  "Recording ${widget.no}",
-                  style: TextStyle(
-                    color: fontColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1.5,
+                InkWell(
+                  onTap: () async {
+                    setState(() {
+                      _isPlaying = true;
+                    });
+                    await widget.player.open(
+                      Audio.file(widget.audio["path"]),
+                      autoStart: true,
+                    );
+
+                    widget.player.playlistAudioFinished.listen((event) {
+                      setState(() {
+                        _isPlaying = false;
+                      });
+                    });
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    color: primaryColor,
+                    elevation: 2,
+                    surfaceTintColor: secondaryColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Icon(
+                        _isPlaying
+                            ? Icons.pause_rounded
+                            : Icons.play_arrow_rounded,
+                        size: 30,
+                        color: _isPlaying ? secondaryIconColor : iconColor,
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  "$date",
-                  style: TextStyle(
-                    color: Color(0xff929eb0),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Recording ${widget.no}",
+                      style: TextStyle(
+                        color: fontColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                    Text(
+                      "$date",
+                      style: TextStyle(
+                        color: Color(0xff929eb0),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
+            _isPlaying
+                ? AudioWave(
+                    height: 50,
+                    width: 100,
+                    spacing: 2.5,
+                    animationLoop: 0,
+                    bars: [
+                      AudioWaveBar(
+                          heightFactor: 0.1, color: Colors.lightBlueAccent),
+                      AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
+                      AudioWaveBar(heightFactor: 0.7, color: Colors.black),
+                      AudioWaveBar(heightFactor: 0.4),
+                      AudioWaveBar(
+                          heightFactor: 0.1, color: Colors.lightBlueAccent),
+                      AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
+                      AudioWaveBar(heightFactor: 0.7, color: Colors.black),
+                      AudioWaveBar(heightFactor: 0.4),
+                      AudioWaveBar(
+                          heightFactor: 0.1, color: Colors.lightBlueAccent),
+                      AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
+                      AudioWaveBar(heightFactor: 0.7, color: Colors.black),
+                      AudioWaveBar(heightFactor: 0.4),
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),

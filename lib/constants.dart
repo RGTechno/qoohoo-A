@@ -7,3 +7,4 @@ const Color secondaryColor = Color(0xffafc4dc);
 const Color buttonColor = Color(0xffe34144);
 const Color fontColor = Colors.black;
 const Color iconColor = Colors.black;
+const Color secondaryIconColor = Color(0xffe34144);
