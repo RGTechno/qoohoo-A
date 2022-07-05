@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Directory? appDocDir = await getExternalStorageDirectory();
     String? appDocPath = appDocDir?.path;
     String? filePath =
-        appDocPath! + '/' + DateTime.now().microsecondsSinceEpoch.toString();
+        appDocPath! + '/' + DateTime.now().millisecondsSinceEpoch.toString();
 
     return filePath;
   }
@@ -53,35 +53,60 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      backgroundColor: primaryColor,
+      // backgroundColor: primaryColor,
       body: SafeArea(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                primaryColor.withOpacity(0.7),
+                secondaryColor.withOpacity(0.8),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              tileMode: TileMode.clamp,
+            ),
+          ),
+          height: mediaQuery.size.height,
           padding: EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 20,
           ),
           child: Stack(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                    ),
-                    child: Text(
-                      "Latest Recordings",
-                      style: TextStyle(
-                        color: fontColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/logoq.png",
+                            fit: BoxFit.cover,
+                            height: 40,
+                          ),
+                          SizedBox(width: 15),
+                          Text(
+                            "Latest Recordings",
+                            style: TextStyle(
+                              color: fontColor,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  Recordings(audioFilePaths),
-                ],
+                    SizedBox(height: mediaQuery.size.height * 0.05),
+                    Recordings(audioFilePaths),
+                  ],
+                ),
               ),
               // Text(
               //   stopwatch.elapsed.inSeconds.toString() +
@@ -117,14 +142,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: buttonColor,
-                      borderRadius: BorderRadius.circular(10),
+                      color: primaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: secondaryColor,
+                          spreadRadius: 7,
+                          blurRadius: 21,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(50),
                     ),
                     padding: EdgeInsets.all(10),
                     child: Icon(
                       Icons.mic,
-                      size: 50,
-                      color: Colors.white,
+                      size: 35,
+                      color: iconColor,
                     ),
                   ),
                 ),
