@@ -7,8 +7,6 @@ import 'package:test_qoohoo/constants.dart';
 import 'package:test_qoohoo/model/sound_recorder.dart';
 import 'package:test_qoohoo/widgets/recordings.dart';
 import 'package:test_qoohoo/widgets/waves.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -79,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               SingleChildScrollView(
                 child: isRecording
-                    ? Waves(stopwatch)
+                    ? Waves(stopwatch: stopwatch,height: 100)
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -106,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(height: mediaQuery.size.height * 0.05),
+                          SizedBox(height: mediaQuery.size.height * 0.03),
                           audioFilePaths.length == 0
                               ? Center(
                                   child: Text(

@@ -1,5 +1,4 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:audio_wave/audio_wave.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:test_qoohoo/constants.dart';
@@ -29,7 +28,7 @@ class _RecordItemState extends State<RecordItem> {
     return "${date.day}/${date.month}/${date.year}";
   }
 
-  bool _isPlaying = false;
+  // bool _isPlaying = false;
 
   late String date;
 
@@ -72,56 +71,49 @@ class _RecordItemState extends State<RecordItem> {
             end: Alignment.centerRight,
           ),
         ),
-        height: _isPlaying
-            ? mediaQuery.orientation == Orientation.landscape
-                ? mediaQuery.size.height * 0.4
-                : mediaQuery.size.height * 0.2
-            : mediaQuery.orientation == Orientation.landscape
-                ? mediaQuery.size.height * 0.2
-                : mediaQuery.size.height * 0.1,
+        height: mediaQuery.orientation == Orientation.landscape
+            ? mediaQuery.size.height * 0.2
+            : mediaQuery.size.height * 0.1,
         child: Column(
-          mainAxisAlignment: _isPlaying
-              ? MainAxisAlignment.spaceAround
-              : MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                InkWell(
-                  onTap: () async {
-                    setState(() {
-                      _isPlaying = true;
-                    });
-                    await widget.player.open(
-                      Audio.file(widget.audio["path"]),
-                      autoStart: true,
-                    );
-
-                    widget.player.playlistAudioFinished.listen((event) {
-                      setState(() {
-                        _isPlaying = false;
-                      });
-                    });
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    color: primaryColor,
-                    elevation: 2,
-                    surfaceTintColor: secondaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Icon(
-                        _isPlaying
-                            ? Icons.pause_rounded
-                            : Icons.play_arrow_rounded,
-                        size: 30,
-                        color: _isPlaying ? secondaryIconColor : iconColor,
-                      ),
+                // InkWell(
+                //   onTap: () async {
+                //     // setState(() {
+                //     //   _isPlaying = true;
+                //     // });
+                //     await widget.player.open(
+                //       Audio.file(widget.audio["path"]),
+                //       autoStart: true,
+                //     );
+                //
+                //     widget.player.playlistAudioFinished.listen((event) {
+                //       // setState(() {
+                //       //   _isPlaying = false;
+                //       // });
+                //     });
+                //   },
+                //   child:
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  color: primaryColor,
+                  elevation: 2,
+                  surfaceTintColor: secondaryColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Icon(
+                      Icons.radio,
+                      size: 25,
+                      color: iconColor,
                     ),
                   ),
                 ),
+                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -147,31 +139,31 @@ class _RecordItemState extends State<RecordItem> {
                 ),
               ],
             ),
-            _isPlaying
-                ? AudioWave(
-                    height: 50,
-                    width: 100,
-                    spacing: 2.5,
-                    animationLoop: 0,
-                    bars: [
-                      AudioWaveBar(
-                          heightFactor: 0.1, color: Colors.lightBlueAccent),
-                      AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
-                      AudioWaveBar(heightFactor: 0.7, color: Colors.black),
-                      AudioWaveBar(heightFactor: 0.4),
-                      AudioWaveBar(
-                          heightFactor: 0.1, color: Colors.lightBlueAccent),
-                      AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
-                      AudioWaveBar(heightFactor: 0.7, color: Colors.black),
-                      AudioWaveBar(heightFactor: 0.4),
-                      AudioWaveBar(
-                          heightFactor: 0.1, color: Colors.lightBlueAccent),
-                      AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
-                      AudioWaveBar(heightFactor: 0.7, color: Colors.black),
-                      AudioWaveBar(heightFactor: 0.4),
-                    ],
-                  )
-                : Container(),
+            // _isPlaying
+            //     ? AudioWave(
+            //         height: 50,
+            //         width: 100,
+            //         spacing: 2.5,
+            //         animationLoop: 0,
+            //         bars: [
+            //           AudioWaveBar(
+            //               heightFactor: 0.1, color: Colors.lightBlueAccent),
+            //           AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
+            //           AudioWaveBar(heightFactor: 0.7, color: Colors.black),
+            //           AudioWaveBar(heightFactor: 0.4),
+            //           AudioWaveBar(
+            //               heightFactor: 0.1, color: Colors.lightBlueAccent),
+            //           AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
+            //           AudioWaveBar(heightFactor: 0.7, color: Colors.black),
+            //           AudioWaveBar(heightFactor: 0.4),
+            //           AudioWaveBar(
+            //               heightFactor: 0.1, color: Colors.lightBlueAccent),
+            //           AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
+            //           AudioWaveBar(heightFactor: 0.7, color: Colors.black),
+            //           AudioWaveBar(heightFactor: 0.4),
+            //         ],
+            //       )
+            //     : Container(),
           ],
         ),
       ),

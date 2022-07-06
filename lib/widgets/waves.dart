@@ -3,9 +3,13 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 class Waves extends StatelessWidget {
-  final Stopwatch stopwatch;
+  final Stopwatch? stopwatch;
+  final double? height;
 
-  Waves(this.stopwatch);
+  Waves({
+    this.stopwatch,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class Waves extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: mediaQuery.size.height * 0.1,
+            height: height == null ? 3 : mediaQuery.size.height * 0.1,
             alignment: Alignment.center,
             child: WaveWidget(
               config: CustomConfig(
@@ -46,14 +50,16 @@ class Waves extends StatelessWidget {
             ),
           ),
           SizedBox(height: 50),
-          Text(
-            stopwatch.elapsed.inMinutes.toString() +
-                ":" +
-                stopwatch.elapsed.inSeconds.toString(),
-            style: TextStyle(
-              fontSize: 35,
-            ),
-          ),
+          stopwatch == null
+              ? Container()
+              : Text(
+                  stopwatch!.elapsed.inMinutes.toString() +
+                      ":" +
+                      stopwatch!.elapsed.inSeconds.toString(),
+                  style: TextStyle(
+                    fontSize: 35,
+                  ),
+                ),
         ],
       ),
     );
