@@ -1,16 +1,15 @@
-# test_qoohoo
+# Qoohoo Assignment - Flutter Audio
 
-A new Flutter project.
+The Project includes a Audio Recorder and Player system where the user is enabled to record his voice memos and play it as well.
 
-## Getting Started
+## Features:
+- Long Press Recording
+- Waves Generated on play
+- Elegant UI
 
-This project is a starting point for a Flutter application.
+## Essential Packages Used
+- [flutter_sound](https://pub.dev/packages/flutter_sound) => To Enable Recording of Audio
+- [path_provider](https://pub.dev/packages/path_provider) => To store the recorded audio in a dynamic path
+- [permission_handler](https://pub.dev/packages/permission_handler) => To request user for permission such as (Microphone and Storage)
+- [assets_audio_player](https://pub.dev/packages/assets_audio_player) => To play the audio from File
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
