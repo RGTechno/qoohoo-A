@@ -8,17 +8,37 @@ class AudioRecorder {
 
   bool get isRecording => _audioRecorder!.isRecording;
 
-  Future init() async {
-    _audioRecorder = FlutterSoundRecorder();
+  Future<bool> micPermissions() async {
     final micPermission = await Permission.microphone.request();
+    if (micPermission.isDenied == true ||
+        micPermission.isPermanentlyDenied == true) {
+      micPermissions();
+    }
+    return true;
+  }
+
+  Future<bool> storagePermissions() async {
     final storagePermission = await Permission.storage.request();
     await Permission.manageExternalStorage.request();
-    if (micPermission != PermissionStatus.granted) {
-      throw RecordingPermissionException("Microphone permission denied");
+    if (storagePermission.isDenied == true ||
+        storagePermission.isPermanentlyDenied == true) {
+      storagePermissions();
     }
-    if (storagePermission != PermissionStatus.granted) {
-      throw Exception("Storage permission denied");
+    return true;
+  }
+
+  Future<bool> askPermissions() async {
+    final micStatus = await micPermissions();
+    final storageStatus = await storagePermissions();
+    if (micStatus == false && storageStatus == false) {
+      askPermissions();
     }
+    return true;
+  }
+
+  Future init() async {
+    _audioRecorder = FlutterSoundRecorder();
+    askPermissions();
     await _audioRecorder?.openRecorder();
     isInit = true;
   }

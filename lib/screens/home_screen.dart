@@ -140,10 +140,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: primaryColor,
+                      color: buttonColor,
                       border: isRecording
                           ? Border.all(
-                              color: buttonColor,
+                              color: Colors.white,
                               width: 5,
                             )
                           : null,
@@ -155,13 +155,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           offset: Offset(1, 1),
                         ),
                       ],
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     padding: EdgeInsets.all(10),
                     child: const Icon(
                       Icons.mic,
-                      size: 35,
-                      color: iconColor,
+                      size: 30,
+                      color: Colors.white,
                     ),
                   ),
                 ),
