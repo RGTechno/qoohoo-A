@@ -6,6 +6,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:test_qoohoo/constants.dart';
 import 'package:test_qoohoo/model/sound_recorder.dart';
 import 'package:test_qoohoo/widgets/recordings.dart';
+import 'package:test_qoohoo/widgets/waves.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -75,57 +78,63 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Stack(
             children: [
               SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                      ),
-                      child: Row(
+                child: isRecording
+                    ? Waves(stopwatch)
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(
-                            "assets/images/logoq.png",
-                            fit: BoxFit.cover,
-                            height: 40,
-                          ),
-                          SizedBox(width: 15),
-                          Text(
-                            "Latest Recordings",
-                            style: TextStyle(
-                              color: fontColor,
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8.0,
+                            ),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/images/logoq.png",
+                                  fit: BoxFit.cover,
+                                  height: 40,
+                                ),
+                                SizedBox(width: 15),
+                                Text(
+                                  "Latest Recordings",
+                                  style: TextStyle(
+                                    color: fontColor,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          SizedBox(height: mediaQuery.size.height * 0.05),
+                          audioFilePaths.length == 0
+                              ? Center(
+                                  child: Text(
+                                    "Hey! Go on record your first audio!",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                )
+                              : Recordings(audioFilePaths),
                         ],
                       ),
-                    ),
-                    SizedBox(height: mediaQuery.size.height * 0.05),
-                    Recordings(audioFilePaths),
-                  ],
-                ),
               ),
-              // Text(
-              //   stopwatch.elapsed.inSeconds.toString() +
-              //       ":" +
-              //       stopwatch.elapsed.inMilliseconds.toString(),
-              //   style: TextStyle(
-              //     fontSize: 35,
-              //   ),
-              // ),
               Positioned(
                 bottom: 0,
                 right: 0,
                 child: GestureDetector(
                   onLongPressStart: (LongPressStartDetails det) async {
                     stopwatch.start();
-                    // timer = Timer.periodic(Duration(milliseconds: 1), (_) {
-                    //   setState(() {});
-                    // });
                     setState(() {
                       isRecording = true;
                     });
+                    if (isRecording) {
+                      timer = Timer.periodic(Duration(milliseconds: 10), (_) {
+                        setState(() {});
+                      });
+                    }
                     String? newPath = await getPath();
                     await _recorder.record(newPath!);
                   },
@@ -139,6 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             "${stopwatch.elapsed.inMinutes.toString()}:${stopwatch.elapsed.inSeconds.toString()}"
                       });
                     }
+                    timer.cancel();
+                    stopwatch.reset();
                     setState(() {
                       isRecording = false;
                     });

@@ -39,6 +39,7 @@ dependencies:
   permission_handler: ^10.0.0
   assets_audio_player: ^3.0.4+4
   audio_wave: ^0.1.4
+  wave: ^0.2.2
 
 dev_dependencies:
   flutter_test:
