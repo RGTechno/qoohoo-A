@@ -34,16 +34,16 @@ class _RecordingsState extends State<Recordings> {
                     ? mediaQuery.size.height * 0.5
                     : mediaQuery.size.height * 0.3,
                 width: double.infinity,
-                margin: EdgeInsets.only(bottom: 15),
+                margin: const EdgeInsets.only(bottom: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     image: AssetImage("assets/images/speaker.jpg"),
                     fit: BoxFit.cover,
                     alignment: Alignment.center,
                     opacity: 0.05,
                   ),
-                  gradient: RadialGradient(
+                  gradient: const RadialGradient(
                     colors: [
                       primaryColor,
                       secondaryColor,
@@ -73,11 +73,6 @@ class _RecordingsState extends State<Recordings> {
                                 _isPlaying = false;
                               });
                               await _player.pause();
-                              // _player.playlistAudioFinished.listen((event) {
-                              //   setState(() {
-                              //     _isPlaying = false;
-                              //   });
-                              // });
                             },
                       child: Card(
                         shape: RoundedRectangleBorder(
@@ -104,7 +99,7 @@ class _RecordingsState extends State<Recordings> {
                       children: [
                         Text(
                           "Recording $recordingNo",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w300,
                             fontSize: 15,
                             fontStyle: FontStyle.italic,
@@ -112,7 +107,7 @@ class _RecordingsState extends State<Recordings> {
                         ),
                         Text(
                           "Duration(m:s)  $duration",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w300,
                             fontSize: 15,
                             fontStyle: FontStyle.italic,
@@ -149,7 +144,7 @@ class _RecordingsState extends State<Recordings> {
           },
           itemCount: widget.audioPaths.length,
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
         ),
       ],
     );

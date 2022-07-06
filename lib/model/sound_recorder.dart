@@ -1,10 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-
 
 class AudioRecorder {
   FlutterSoundRecorder? _audioRecorder;
@@ -42,7 +37,6 @@ class AudioRecorder {
   Future<String?> stop() async {
     if (!isInit) return null;
     String? tmpPath = await _audioRecorder?.stopRecorder();
-    // print(tmpPath);
     return tmpPath;
   }
 }

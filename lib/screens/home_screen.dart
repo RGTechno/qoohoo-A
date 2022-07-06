@@ -6,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:test_qoohoo/constants.dart';
 import 'package:test_qoohoo/model/sound_recorder.dart';
 import 'package:test_qoohoo/widgets/recordings.dart';
-import 'package:test_qoohoo/widgets/waves.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,9 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Map> audioFilePaths = [];
 
-  AudioRecorder _recorder = AudioRecorder();
-
-  late Timer timer;
+  final AudioRecorder _recorder = AudioRecorder();
 
   bool isRecording = false;
 
@@ -30,23 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
     Directory? appDocDir = await getExternalStorageDirectory();
     String? appDocPath = appDocDir?.path;
     String? filePath =
-        appDocPath! + '/' + DateTime.now().millisecondsSinceEpoch.toString();
+        '${appDocPath!}/${DateTime.now().millisecondsSinceEpoch}';
 
     return filePath;
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     _recorder.init();
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _recorder.dispose();
-    timer.cancel();
     super.dispose();
   }
 
@@ -54,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      // backgroundColor: primaryColor,
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -69,55 +62,53 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           height: mediaQuery.size.height,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 20,
           ),
           child: Stack(
             children: [
               SingleChildScrollView(
-                child: isRecording
-                    ? Waves(stopwatch: stopwatch,height: 100)
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                      ),
+                      child: Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                            ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  "assets/images/logoq.png",
-                                  fit: BoxFit.cover,
-                                  height: 40,
-                                ),
-                                SizedBox(width: 15),
-                                Text(
-                                  "Latest Recordings",
-                                  style: TextStyle(
-                                    color: fontColor,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+                          Image.asset(
+                            "assets/images/logoq.png",
+                            fit: BoxFit.cover,
+                            height: 40,
+                          ),
+                          SizedBox(width: 15),
+                          const Text(
+                            "Latest Recordings",
+                            style: TextStyle(
+                              color: fontColor,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          SizedBox(height: mediaQuery.size.height * 0.03),
-                          audioFilePaths.length == 0
-                              ? Center(
-                                  child: Text(
-                                    "Hey! Go on record your first audio!",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                )
-                              : Recordings(audioFilePaths),
                         ],
                       ),
+                    ),
+                    SizedBox(height: mediaQuery.size.height * 0.03),
+                    audioFilePaths.length == 0
+                        ? const Center(
+                            child: Text(
+                              "Hey! Go on record your first audio!",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          )
+                        : Recordings(audioFilePaths),
+                  ],
+                ),
               ),
               Positioned(
                 bottom: 0,
@@ -128,11 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       isRecording = true;
                     });
-                    if (isRecording) {
-                      timer = Timer.periodic(Duration(milliseconds: 10), (_) {
-                        setState(() {});
-                      });
-                    }
+
                     String? newPath = await getPath();
                     await _recorder.record(newPath!);
                   },
@@ -146,7 +133,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             "${stopwatch.elapsed.inMinutes.toString()}:${stopwatch.elapsed.inSeconds.toString()}"
                       });
                     }
-                    timer.cancel();
                     stopwatch.reset();
                     setState(() {
                       isRecording = false;
@@ -161,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 5,
                             )
                           : null,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: secondaryColor,
                           spreadRadius: 7,
@@ -172,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     padding: EdgeInsets.all(10),
-                    child: Icon(
+                    child: const Icon(
                       Icons.mic,
                       size: 35,
                       color: iconColor,

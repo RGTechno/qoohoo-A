@@ -28,13 +28,10 @@ class _RecordItemState extends State<RecordItem> {
     return "${date.day}/${date.month}/${date.year}";
   }
 
-  // bool _isPlaying = false;
-
   late String date;
 
   @override
   void initState() {
-    // TODO: implement initState
     date = getDate(widget.audio["path"]);
     super.initState();
   }
@@ -44,8 +41,7 @@ class _RecordItemState extends State<RecordItem> {
     final mediaQuery = MediaQuery.of(context);
     return Card(
       elevation: 4,
-      // margin: EdgeInsets.symmetric(vertical: ),
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
@@ -56,7 +52,7 @@ class _RecordItemState extends State<RecordItem> {
       child: Container(
         decoration: BoxDecoration(
           color: secondaryColor,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
             bottomLeft: Radius.circular(10),
@@ -80,23 +76,6 @@ class _RecordItemState extends State<RecordItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // InkWell(
-                //   onTap: () async {
-                //     // setState(() {
-                //     //   _isPlaying = true;
-                //     // });
-                //     await widget.player.open(
-                //       Audio.file(widget.audio["path"]),
-                //       autoStart: true,
-                //     );
-                //
-                //     widget.player.playlistAudioFinished.listen((event) {
-                //       // setState(() {
-                //       //   _isPlaying = false;
-                //       // });
-                //     });
-                //   },
-                //   child:
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
@@ -104,8 +83,8 @@ class _RecordItemState extends State<RecordItem> {
                   color: primaryColor,
                   elevation: 2,
                   surfaceTintColor: secondaryColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(5.0),
                     child: Icon(
                       Icons.radio,
                       size: 25,
@@ -113,14 +92,13 @@ class _RecordItemState extends State<RecordItem> {
                     ),
                   ),
                 ),
-                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Recording ${widget.no}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: fontColor,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -128,8 +106,8 @@ class _RecordItemState extends State<RecordItem> {
                       ),
                     ),
                     Text(
-                      "$date",
-                      style: TextStyle(
+                      date,
+                      style: const TextStyle(
                         color: Color(0xff929eb0),
                         fontWeight: FontWeight.w400,
                         fontSize: 13,
@@ -139,31 +117,6 @@ class _RecordItemState extends State<RecordItem> {
                 ),
               ],
             ),
-            // _isPlaying
-            //     ? AudioWave(
-            //         height: 50,
-            //         width: 100,
-            //         spacing: 2.5,
-            //         animationLoop: 0,
-            //         bars: [
-            //           AudioWaveBar(
-            //               heightFactor: 0.1, color: Colors.lightBlueAccent),
-            //           AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
-            //           AudioWaveBar(heightFactor: 0.7, color: Colors.black),
-            //           AudioWaveBar(heightFactor: 0.4),
-            //           AudioWaveBar(
-            //               heightFactor: 0.1, color: Colors.lightBlueAccent),
-            //           AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
-            //           AudioWaveBar(heightFactor: 0.7, color: Colors.black),
-            //           AudioWaveBar(heightFactor: 0.4),
-            //           AudioWaveBar(
-            //               heightFactor: 0.1, color: Colors.lightBlueAccent),
-            //           AudioWaveBar(heightFactor: 0.3, color: Colors.blue),
-            //           AudioWaveBar(heightFactor: 0.7, color: Colors.black),
-            //           AudioWaveBar(heightFactor: 0.4),
-            //         ],
-            //       )
-            //     : Container(),
           ],
         ),
       ),

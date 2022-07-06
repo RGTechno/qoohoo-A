@@ -14,21 +14,23 @@ class Waves extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    const _backgroundColor = Color(0xFFF15BB5);
 
     const _colors = [
+      Colors.lightBlueAccent,
       Colors.black,
-      Colors.pink,
+      Colors.blue,
     ];
 
     const _durations = [
-      5000,
+      3000,
+      3500,
       4000,
     ];
 
     const _heightPercentages = [
       0.65,
       0.66,
+      0.67,
     ];
     return Center(
       child: Column(
@@ -45,7 +47,7 @@ class Waves extends StatelessWidget {
                 durations: _durations,
                 heightPercentages: _heightPercentages,
               ),
-              size: Size(double.infinity, double.infinity),
+              size: const Size(double.infinity, double.infinity),
               isLoop: true,
             ),
           ),
@@ -53,10 +55,8 @@ class Waves extends StatelessWidget {
           stopwatch == null
               ? Container()
               : Text(
-                  stopwatch!.elapsed.inMinutes.toString() +
-                      ":" +
-                      stopwatch!.elapsed.inSeconds.toString(),
-                  style: TextStyle(
+                  "${stopwatch!.elapsed.inMinutes}:${stopwatch!.elapsed.inSeconds}",
+                  style: const TextStyle(
                     fontSize: 35,
                   ),
                 ),
